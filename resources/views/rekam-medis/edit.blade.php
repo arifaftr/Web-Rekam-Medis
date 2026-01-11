@@ -1,150 +1,168 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Rekam Medis</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #9b59b6;
-            box-shadow: 0 0 5px rgba(155, 89, 182, 0.5);
-        }
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 30px;
-        }
-        button, a {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        button[type="submit"] {
-            background: #9b59b6;
-            color: white;
-        }
-        button[type="submit"]:hover {
-            background: #8e44ad;
-        }
-        .btn-cancel {
-            background: #6c757d;
-            color: white;
-        }
-        .btn-cancel:hover {
-            background: #5a6268;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>✏️ Edit Rekam Medis</h1>
-        
-        <form action="{{ route('rekam-medis.update', $rekamMedis->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div class="form-group">
-                <label for="pasien_id">Pasien *</label>
-                <select id="pasien_id" name="pasien_id" required>
-                    @foreach($pasiens as $pasien)
-                        <option value="{{ $pasien->id }}" {{ $rekamMedis->pasien_id == $pasien->id ? 'selected' : '' }}>{{ $pasien->nama }}</option>
-                    @endforeach
-                </select>
+<x-master-layout title="Edit Rekam Medis">
+    <div class="mb-8 space-y-3">
+        <div class="relative overflow-hidden rounded-2xl border border-sky-100 bg-gradient-to-r from-sky-50 via-white to-teal-50 p-6 shadow-sm">
+            <div class="absolute -right-8 -top-10 h-32 w-32 rounded-full bg-sky-200/40 blur-3xl"></div>
+            <div class="absolute -left-10 bottom-0 h-24 w-24 rounded-full bg-teal-200/40 blur-3xl"></div>
+            <div class="relative flex flex-col gap-2">
+                <p class="text-xs uppercase tracking-[0.28em] text-sky-500">Pembaruan Data</p>
+                <h1 class="text-3xl font-bold text-sky-900">Edit Rekam Medis</h1>
+                <p class="max-w-2xl text-slate-600">Perbarui informasi penting kunjungan pasien dengan tampilan yang bersih dan mudah dipindai.</p>
             </div>
-
-            <div class="form-group">
-                <label for="dokter_id">Dokter *</label>
-                <select id="dokter_id" name="dokter_id" required>
-                    @foreach($dokters as $dokter)
-                        <option value="{{ $dokter->id }}" {{ $rekamMedis->dokter_id == $dokter->id ? 'selected' : '' }}>{{ $dokter->nama }} ({{ $dokter->spesialisasi }})</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="tanggal_kunjungan">Tanggal Kunjungan *</label>
-                <input type="date" id="tanggal_kunjungan" name="tanggal_kunjungan" required value="{{ $rekamMedis->tanggal_kunjungan }}">
-            </div>
-
-            <div class="form-group">
-                <label for="keluhan">Keluhan *</label>
-                <textarea id="keluhan" name="keluhan" required placeholder="Masukkan keluhan pasien">{{ $rekamMedis->keluhan }}</textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="diagnosa">Diagnosa *</label>
-                <textarea id="diagnosa" name="diagnosa" required placeholder="Masukkan diagnosa">{{ $rekamMedis->diagnosa }}</textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="resep">Resep</label>
-                <textarea id="resep" name="resep" placeholder="Masukkan resep obat (opsional)">{{ $rekamMedis->resep }}</textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="biaya">Biaya (Rp)</label>
-                <input type="number" id="biaya" name="biaya" placeholder="Masukkan biaya kunjungan" min="0" step="0.01" value="{{ $rekamMedis->biaya }}">
-            </div>
-
-            <div class="form-actions">
-                <button type="submit">✅ Update</button>
-                <a href="/rekam-medis" class="btn-cancel">❌ Batal</a>
-            </div>
-        </form>
+        </div>
     </div>
-</body>
-</html>
+
+    <div class="max-w-4xl">
+        <div class="overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-xl shadow-sky-50/60">
+            <div class="flex items-center justify-between border-b border-sky-100 px-6 py-4">
+                <div>
+                    <h2 class="text-lg font-semibold text-sky-900">Data Rekam Medis</h2>
+                    <p class="text-sm text-slate-500">Pastikan data terisi dengan benar sebelum disimpan.</p>
+                </div>
+                <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">Sedang diedit</span>
+            </div>
+
+            <form action="{{ route('rekam-medis.update', $rekamMedis->id) }}" method="POST" class="p-6 space-y-6">
+                @csrf
+                @method('PUT')
+
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div>
+                        <label for="pasien_id" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Pasien <span class="text-rose-500">*</span>
+                        </label>
+                        <select
+                            name="pasien_id"
+                            id="pasien_id"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('pasien_id') border-rose-400 ring-rose-100 @enderror"
+                            required>
+                            @foreach($pasiens as $pasien)
+                                <option value="{{ $pasien->id }}" @selected(old('pasien_id', $rekamMedis->pasien_id) == $pasien->id)>{{ $pasien->nama }}</option>
+                            @endforeach
+                        </select>
+                        @error('pasien_id')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="dokter_id" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Dokter <span class="text-rose-500">*</span>
+                        </label>
+                        <select
+                            name="dokter_id"
+                            id="dokter_id"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('dokter_id') border-rose-400 ring-rose-100 @enderror"
+                            required>
+                            @foreach($dokters as $dokter)
+                                <option value="{{ $dokter->id }}" @selected(old('dokter_id', $rekamMedis->dokter_id) == $dokter->id)>{{ $dokter->nama }} ({{ $dokter->spesialisasi }})</option>
+                            @endforeach
+                        </select>
+                        @error('dokter_id')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="tanggal_kunjungan" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Tanggal Kunjungan <span class="text-rose-500">*</span>
+                        </label>
+                        <input
+                            type="date"
+                            name="tanggal_kunjungan"
+                            id="tanggal_kunjungan"
+                            value="{{ old('tanggal_kunjungan', \Carbon\Carbon::parse($rekamMedis->tanggal_kunjungan)->format('Y-m-d')) }}"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('tanggal_kunjungan') border-rose-400 ring-rose-100 @enderror"
+                            required>
+                        @error('tanggal_kunjungan')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="biaya" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Biaya (Rp)
+                        </label>
+                        <input
+                            type="number"
+                            name="biaya"
+                            id="biaya"
+                            value="{{ old('biaya', $rekamMedis->biaya) }}"
+                            placeholder="0"
+                            min="0"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('biaya') border-rose-400 ring-rose-100 @enderror">
+                        @error('biaya')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div class="md:col-span-2">
+                        <label for="keluhan" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Keluhan <span class="text-rose-500">*</span>
+                        </label>
+                        <textarea
+                            name="keluhan"
+                            id="keluhan"
+                            rows="3"
+                            placeholder="Masukkan keluhan pasien"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('keluhan') border-rose-400 ring-rose-100 @enderror"
+                            required>{{ old('keluhan', $rekamMedis->keluhan) }}</textarea>
+                        @error('keluhan')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label for="diagnosa" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Diagnosa <span class="text-rose-500">*</span>
+                        </label>
+                        <textarea
+                            name="diagnosa"
+                            id="diagnosa"
+                            rows="3"
+                            placeholder="Masukkan diagnosa"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('diagnosa') border-rose-400 ring-rose-100 @enderror"
+                            required>{{ old('diagnosa', $rekamMedis->diagnosa) }}</textarea>
+                        @error('diagnosa')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between">
+                        <label for="obat_ids" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Resep (Pilih Obat)
+                        </label>
+                        <span class="text-xs font-medium uppercase tracking-wide text-slate-500">Opsional</span>
+                    </div>
+                    <select
+                        name="obat_ids[]"
+                        id="obat_ids"
+                        multiple
+                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300">
+                        @php
+                            $selectedObats = old('obat_ids', $selected ?? []);
+                        @endphp
+                        @foreach($obats as $obat)
+                            <option value="{{ $obat->id }}" @selected(in_array($obat->id, $selectedObats))>
+                                {{ $obat->nama }} @if($obat->dosis)({{ $obat->dosis }})@endif
+                            </option>
+                        @endforeach
+                    </select>
+                    <p class="mt-2 text-sm text-slate-500">Tahan Ctrl/Cmd untuk memilih beberapa obat sekaligus.</p>
+                </div>
+
+                <div class="flex flex-col gap-3 pt-4 md:flex-row">
+                    <button type="submit" class="flex-1 rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-300">
+                        Update Rekam Medis
+                    </button>
+                    <a href="{{ route('rekam-medis.index') }}" class="flex-1 rounded-xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:border-sky-200 hover:text-sky-800">
+                        Batal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</x-master-layout>

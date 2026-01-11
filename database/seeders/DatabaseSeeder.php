@@ -15,11 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Create sample test data - this is optional since users are already seeded
+        // You can add pasien, dokter, obat data here if needed
     }
 }

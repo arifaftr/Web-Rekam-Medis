@@ -1,126 +1,136 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Obat Baru</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #11998e;
-            box-shadow: 0 0 5px rgba(17, 153, 142, 0.5);
-        }
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 30px;
-        }
-        button, a {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        button[type="submit"] {
-            background: #11998e;
-            color: white;
-        }
-        button[type="submit"]:hover {
-            background: #38ef7d;
-        }
-        .btn-cancel {
-            background: #6c757d;
-            color: white;
-        }
-        .btn-cancel:hover {
-            background: #5a6268;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>💊 Tambah Obat Baru</h1>
-        
-        <form action="{{ route('obat.store') }}" method="POST">
-            @csrf
-
-            <div class="form-group">
-                <label for="nama">Nama Obat *</label>
-                <input type="text" id="nama" name="nama" required placeholder="Masukkan nama obat">
+<x-master-layout title="Tambah Obat">
+    <div class="mb-8 space-y-3">
+        <div class="relative overflow-hidden rounded-2xl border border-sky-100 bg-gradient-to-r from-sky-50 via-white to-teal-50 p-6 shadow-sm">
+            <div class="absolute -right-8 -top-10 h-32 w-32 rounded-full bg-sky-200/40 blur-3xl"></div>
+            <div class="absolute -left-10 bottom-0 h-24 w-24 rounded-full bg-teal-200/40 blur-3xl"></div>
+            <div class="relative flex flex-col gap-2">
+                <p class="text-xs uppercase tracking-[0.28em] text-sky-500">Data Baru</p>
+                <h1 class="text-3xl font-bold text-sky-900">Tambah Obat Baru</h1>
+                <p class="max-w-2xl text-slate-600">Isi formulir di bawah untuk menambahkan obat baru ke sistem.</p>
             </div>
-
-            <div class="form-group">
-                <label for="dosis">Dosis *</label>
-                <input type="text" id="dosis" name="dosis" required placeholder="Contoh: 500mg, 2x sehari">
-            </div>
-
-            <div class="form-group">
-                <label for="harga">Harga (Rp) *</label>
-                <input type="number" id="harga" name="harga" required placeholder="Masukkan harga obat" min="0">
-            </div>
-
-            <div class="form-group">
-                <label for="stok">Stok *</label>
-                <input type="number" id="stok" name="stok" required placeholder="Masukkan jumlah stok" min="0">
-            </div>
-
-            <div class="form-actions">
-                <button type="submit">✅ Simpan</button>
-                <a href="/obat" class="btn-cancel">❌ Batal</a>
-            </div>
-        </form>
+        </div>
     </div>
-</body>
-</html>
+
+    <div class="max-w-3xl">
+        <div class="overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-xl shadow-sky-50/60">
+            <div class="flex items-center justify-between border-b border-sky-100 px-6 py-4">
+                <div>
+                    <h2 class="text-lg font-semibold text-sky-900">Data Obat</h2>
+                    <p class="text-sm text-slate-500">Pastikan data harga dan stok terisi dengan benar.</p>
+                </div>
+                <span class="rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">Formulir</span>
+            </div>
+
+            <form action="{{ route('obat.store') }}" method="POST" class="p-6 space-y-6">
+                @csrf
+
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div>
+                        <label for="nama" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Nama Obat <span class="text-rose-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="nama"
+                            id="nama"
+                            value="{{ old('nama') }}"
+                            placeholder="Masukkan nama obat"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('nama') border-rose-400 ring-rose-100 @enderror"
+                            required>
+                        @error('nama')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="dosis" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Dosis <span class="text-rose-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="dosis"
+                            id="dosis"
+                            value="{{ old('dosis') }}"
+                            placeholder="Contoh: 500mg"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('dosis') border-rose-400 ring-rose-100 @enderror"
+                            required>
+                        @error('dosis')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="kategori" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Kategori
+                        </label>
+                        <input
+                            type="text"
+                            name="kategori"
+                            id="kategori"
+                            value="{{ old('kategori') }}"
+                            placeholder="Contoh: Antibiotik"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('kategori') border-rose-400 ring-rose-100 @enderror">
+                        @error('kategori')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="harga" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Harga (Rp) <span class="text-rose-500">*</span>
+                        </label>
+                        <input
+                            type="number"
+                            name="harga"
+                            id="harga"
+                            value="{{ old('harga') }}"
+                            placeholder="0"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('harga') border-rose-400 ring-rose-100 @enderror"
+                            required>
+                        @error('harga')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="stok" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Stok <span class="text-rose-500">*</span>
+                        </label>
+                        <input
+                            type="number"
+                            name="stok"
+                            id="stok"
+                            value="{{ old('stok') }}"
+                            placeholder="0"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('stok') border-rose-400 ring-rose-100 @enderror"
+                            required>
+                        @error('stok')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div>
+                    <label for="keterangan" class="mb-2 block text-sm font-semibold text-sky-900">
+                        Keterangan
+                    </label>
+                    <textarea
+                        name="keterangan"
+                        id="keterangan"
+                        rows="4"
+                        placeholder="Masukkan keterangan tambahan"
+                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300">{{ old('keterangan') }}</textarea>
+                </div>
+
+                <div class="flex flex-col gap-3 pt-4 md:flex-row">
+                    <button type="submit" class="flex-1 rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-300">
+                        Simpan Obat
+                    </button>
+                    <a href="{{ route('obat.index') }}" class="flex-1 rounded-xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:border-sky-200 hover:text-sky-800">
+                        Batal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</x-master-layout>

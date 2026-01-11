@@ -93,23 +93,21 @@
             opacity: 0.8;
             font-size: 0.9em;
         }
+        
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🏥 Sistem Rekam Medis</h1>
-        <p class="subtitle">Kelola data pasien dan obat dengan mudah</p>
+        <h1>Sistem Rekam Medis</h1>
         
         <div class="nav-buttons">
-            <a href="/pasien" class="btn btn-pasien">👤 Kelola Pasien</a>
-            <a href="/obat" class="btn btn-obat">💊 Kelola Obat</a>
-            <a href="/dokter" class="btn btn-dokter">👨‍⚕️ Kelola Dokter</a>
-            <a href="/rekam-medis" class="btn btn-rekam">📋 Rekam Medis</a>
+            <a href="/pasien" class="btn btn-pasien">Kelola Pasien</a>
+            <a href="/obat" class="btn btn-obat">Kelola Obat</a>
+            <a href="/dokter" class="btn btn-dokter">Kelola Dokter</a>
+            <a href="/rekam-medis" class="btn btn-rekam">Rekam Medis</a>
         </div>
 
-        <div class="footer">
-            <p>© 2025 Sistem Rekam Medis - Semua Hak Dilindungi</p>
-        </div>
+       
     </div>
 </body>
 </html>

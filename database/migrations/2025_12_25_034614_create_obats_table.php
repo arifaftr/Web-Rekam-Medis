@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('dosis');
             $table->decimal('harga', 10, 2);
             $table->integer('stok');
+            $table->string('kategori')->nullable();
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }

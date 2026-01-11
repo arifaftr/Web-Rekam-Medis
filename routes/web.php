@@ -1,48 +1,62 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PasienController;
-use App\Http\Controllers\ObatController;
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\ObatController;
 use App\Http\Controllers\RekamMedisController;
+use App\Http\Controllers\AdminUserController;
+use Illuminate\Support\Facades\Route;
 
+// Redirect root to login or dashboard
 Route::get('/', function () {
-    return view('welcome');
+    return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
 });
 
-// PASIEN
-Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
-Route::get('/pasien/create', [PasienController::class, 'create'])->name('pasien.create');
-Route::post('/pasien/store', [PasienController::class, 'store'])->name('pasien.store');
-Route::get('/pasien/{id}', [PasienController::class, 'show'])->name('pasien.show');
-Route::get('/pasien/{id}/edit', [PasienController::class, 'edit'])->name('pasien.edit');
-Route::put('/pasien/{id}', [PasienController::class, 'update'])->name('pasien.update');
-Route::delete('/pasien/{id}', [PasienController::class, 'destroy'])->name('pasien.destroy');
+// Dashboard - hanya untuk authenticated users
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
-// OBAT
-Route::get('/obat', [ObatController::class, 'index'])->name('obat.index');
-Route::get('/obat/create', [ObatController::class, 'create'])->name('obat.create');
-Route::post('/obat/store', [ObatController::class, 'store'])->name('obat.store');
-Route::get('/obat/{id}', [ObatController::class, 'show'])->name('obat.show');
-Route::get('/obat/{id}/edit', [ObatController::class, 'edit'])->name('obat.edit');
-Route::put('/obat/{id}', [ObatController::class, 'update'])->name('obat.update');
-Route::delete('/obat/{id}', [ObatController::class, 'destroy'])->name('obat.destroy');
+// Routes untuk authenticated users (superadmin dan user)
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    // Routes untuk user biasa - blok superadmin
+    Route::middleware('can_access_data')->group(function () {
+        // Pasien
+        Route::resource('pasien', PasienController::class)
+            ->middleware('permission:view_pasien');
 
-// DOKTER
-Route::get('/dokter', [DokterController::class, 'index'])->name('dokter.index');
-Route::get('/dokter/create', [DokterController::class, 'create'])->name('dokter.create');
-Route::post('/dokter/store', [DokterController::class, 'store'])->name('dokter.store');
-Route::get('/dokter/{id}', [DokterController::class, 'show'])->name('dokter.show');
-Route::get('/dokter/{id}/edit', [DokterController::class, 'edit'])->name('dokter.edit');
-Route::put('/dokter/{id}', [DokterController::class, 'update'])->name('dokter.update');
-Route::delete('/dokter/{id}', [DokterController::class, 'destroy'])->name('dokter.destroy');
+        // Dokter
+        Route::resource('dokter', DokterController::class)
+            ->middleware('permission:view_dokter');
 
-// REKAM MEDIS
-Route::get('/rekam-medis', [RekamMedisController::class, 'index'])->name('rekam-medis.index');
-Route::get('/rekam-medis/create', [RekamMedisController::class, 'create'])->name('rekam-medis.create');
-Route::post('/rekam-medis/store', [RekamMedisController::class, 'store'])->name('rekam-medis.store');
-Route::get('/rekam-medis/{id}', [RekamMedisController::class, 'show'])->name('rekam-medis.show');
-Route::get('/rekam-medis/{id}/edit', [RekamMedisController::class, 'edit'])->name('rekam-medis.edit');
-Route::put('/rekam-medis/{id}', [RekamMedisController::class, 'update'])->name('rekam-medis.update');
-Route::delete('/rekam-medis/{id}', [RekamMedisController::class, 'destroy'])->name('rekam-medis.destroy');
+        // Obat
+        Route::resource('obat', ObatController::class)
+            ->middleware('permission:view_obat');
 
+        // Rekam Medis
+        Route::resource('rekam-medis', RekamMedisController::class)
+            ->middleware('permission:view_rekam_medis');
+    });
+
+    // User management - hanya superadmin
+    Route::group(['middleware' => 'permission:manage_users'], function () {
+        Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('users/create', [AdminUserController::class, 'create'])->name('users.create');
+        Route::post('users', [AdminUserController::class, 'store'])->name('users.store');
+        Route::get('users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+        Route::patch('users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::delete('users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    });
+
+    // Profile management
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+// Auth routes
+require __DIR__.'/auth.php';

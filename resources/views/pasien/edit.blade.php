@@ -1,132 +1,157 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Pasien - {{ $pasien->nama }}</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
-        }
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 30px;
-        }
-        button, a {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        button[type="submit"] {
-            background: #667eea;
-            color: white;
-        }
-        button[type="submit"]:hover {
-            background: #764ba2;
-        }
-        .btn-cancel {
-            background: #6c757d;
-            color: white;
-        }
-        .btn-cancel:hover {
-            background: #5a6268;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>✏️ Edit Pasien</h1>
-        
-        <form action="{{ route('pasien.update', $pasien->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div class="form-group">
-                <label for="nama">Nama *</label>
-                <input type="text" id="nama" name="nama" required placeholder="Masukkan nama pasien" value="{{ $pasien->nama }}">
+<x-master-layout title="Edit Pasien">
+    <div class="mb-8 space-y-3">
+        <div class="relative overflow-hidden rounded-2xl border border-sky-100 bg-gradient-to-r from-sky-50 via-white to-teal-50 p-6 shadow-sm">
+            <div class="absolute -right-8 -top-10 h-32 w-32 rounded-full bg-sky-200/40 blur-3xl"></div>
+            <div class="absolute -left-10 bottom-0 h-24 w-24 rounded-full bg-teal-200/40 blur-3xl"></div>
+            <div class="relative flex flex-col gap-2">
+                <p class="text-xs uppercase tracking-[0.28em] text-sky-500">Pembaruan Data</p>
+                <h1 class="text-3xl font-bold text-sky-900">Edit Pasien</h1>
+                <p class="max-w-2xl text-slate-600">Perbarui informasi pasien {{ $pasien->nama }} dengan tampilan modern yang konsisten.</p>
             </div>
-
-            <div class="form-group">
-                <label for="nomor_identitas">Nomor Identitas (KTP/Paspor) *</label>
-                <input type="text" id="nomor_identitas" name="nomor_identitas" required placeholder="Masukkan nomor identitas" value="{{ $pasien->nomor_identitas }}">
-            </div>
-
-            <div class="form-group">
-                <label for="alamat">Alamat *</label>
-                <textarea id="alamat" name="alamat" required placeholder="Masukkan alamat lengkap">{{ $pasien->alamat }}</textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="no_telepon">No. Telepon *</label>
-                <input type="tel" id="no_telepon" name="no_telepon" required placeholder="Masukkan nomor telepon" value="{{ $pasien->no_telepon }}">
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Masukkan email" value="{{ $pasien->email }}">
-            </div>
-
-            <div class="form-actions">
-                <button type="submit">✅ Update</button>
-                <a href="/pasien" class="btn-cancel">❌ Batal</a>
-            </div>
-        </form>
+        </div>
     </div>
-</body>
-</html>
+
+    <div class="max-w-3xl">
+        <div class="overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-xl shadow-sky-50/60">
+            <div class="flex items-center justify-between border-b border-sky-100 px-6 py-4">
+                <div>
+                    <h2 class="text-lg font-semibold text-sky-900">Data Pasien</h2>
+                    <p class="text-sm text-slate-500">Pastikan data sudah benar sebelum disimpan.</p>
+                </div>
+                <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">Sedang diedit</span>
+            </div>
+
+            <form action="{{ route('pasien.update', $pasien->id) }}" method="POST" class="p-6 space-y-6">
+                @csrf
+                @method('PUT')
+
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div>
+                        <label for="nama" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Nama Lengkap <span class="text-rose-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="nama" 
+                            id="nama" 
+                            value="{{ old('nama', $pasien->nama) }}"
+                            placeholder="Masukkan nama lengkap"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('nama') border-rose-400 ring-rose-100 @enderror"
+                            required>
+                        @error('nama')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="nomor_identitas" class="mb-2 block text-sm font-semibold text-sky-900">
+                            No. Identitas (KTP/Paspor) <span class="text-rose-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="nomor_identitas" 
+                            id="nomor_identitas"
+                            value="{{ old('nomor_identitas', $pasien->nomor_identitas) }}"
+                            placeholder="Masukkan nomor identitas"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('nomor_identitas') border-rose-400 ring-rose-100 @enderror"
+                            required>
+                        @error('nomor_identitas')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="no_telepon" class="mb-2 block text-sm font-semibold text-sky-900">
+                            No. Telepon <span class="text-rose-500">*</span>
+                        </label>
+                        <input 
+                            type="tel" 
+                            name="no_telepon" 
+                            id="no_telepon"
+                            value="{{ old('no_telepon', $pasien->no_telepon) }}"
+                            placeholder="Masukkan nomor telepon"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('no_telepon') border-rose-400 ring-rose-100 @enderror"
+                            required>
+                        @error('no_telepon')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="email" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Email
+                        </label>
+                        <input 
+                            type="email" 
+                            name="email" 
+                            id="email"
+                            value="{{ old('email', $pasien->email) }}"
+                            placeholder="Masukkan email"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('email') border-rose-400 ring-rose-100 @enderror">
+                        @error('email')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="tanggal_lahir" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Tanggal Lahir
+                        </label>
+                        <input 
+                            type="date" 
+                            name="tanggal_lahir" 
+                            id="tanggal_lahir"
+                            value="{{ old('tanggal_lahir', $pasien->tanggal_lahir) }}"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('tanggal_lahir') border-rose-400 ring-rose-100 @enderror">
+                        @error('tanggal_lahir')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="jenis_kelamin" class="mb-2 block text-sm font-semibold text-sky-900">
+                            Jenis Kelamin
+                        </label>
+                        <select 
+                            name="jenis_kelamin" 
+                            id="jenis_kelamin"
+                            class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('jenis_kelamin') border-rose-400 ring-rose-100 @enderror">
+                            <option value="">- Pilih -</option>
+                            <option value="Laki-laki" @selected(old('jenis_kelamin', $pasien->jenis_kelamin) == 'Laki-laki')>Laki-laki</option>
+                            <option value="Perempuan" @selected(old('jenis_kelamin', $pasien->jenis_kelamin) == 'Perempuan')>Perempuan</option>
+                        </select>
+                        @error('jenis_kelamin')
+                            <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div>
+                    <label for="alamat" class="mb-2 block text-sm font-semibold text-sky-900">
+                        Alamat <span class="text-rose-500">*</span>
+                    </label>
+                    <textarea 
+                        name="alamat" 
+                        id="alamat"
+                        rows="4"
+                        placeholder="Masukkan alamat lengkap"
+                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-inner focus:border-sky-400 focus:ring-2 focus:ring-sky-300 @error('alamat') border-rose-400 ring-rose-100 @enderror"
+                        required>{{ old('alamat', $pasien->alamat) }}</textarea>
+                    @error('alamat')
+                        <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex flex-col gap-3 pt-4 md:flex-row">
+                    <button type="submit" class="flex-1 rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-300">
+                        Perbarui Pasien
+                    </button>
+                    <a href="{{ route('pasien.index') }}" class="flex-1 rounded-xl border border-slate-200 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:border-sky-200 hover:text-sky-800">
+                        Batal
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</x-master-layout>
+        

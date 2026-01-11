@@ -10,9 +10,12 @@ class Dokter extends Model
     protected $table = 'dokters';
     public $timestamps = true;
 
+    /**
+     * Get the rekam medis for the dokter
+     */
     public function rekamMedis()
     {
-        return $this->hasMany(RekamMedis::class);
+        return $this->hasOne(RekamMedis::class);
     }
 }
 

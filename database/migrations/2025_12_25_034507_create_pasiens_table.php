@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('no_telepon');
             $table->string('email')->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan'])->nullable();
             $table->timestamps();
         });
     }
