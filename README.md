@@ -125,7 +125,7 @@ Memiliki hak akses penuh terhadap data medis:
 
 ### Step 1: Clone atau Download Project
 ```bash
-cd c:\laragon\www\rekam-medis-4
+git clone https://github.com/arifaftr/Web-Rekam-Medis.git
 ```
 
 ### Step 2: Install Dependencies
